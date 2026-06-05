@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Stockist</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+
+:root{
+  --primary:#0d6efd;
+  --bg:#f5f7fb;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html,body{
+  margin:0;
+  padding:0;
+}
+
+body{
+  background:var(--bg);
+  min-height:100vh;
+  padding-bottom:80px;
+  font-size:15px;
+}
+
+/* HEADER */
+
+.header-card{
+  background:linear-gradient(135deg,#0d6efd,#4f8cff);
+  color:#fff;
+  padding:18px;
+  border-radius:0 0 24px 24px;
+  box-shadow:0 4px 15px rgba(0,0,0,.12);
+}
+
+/* SEARCH */
+
+.search-sticky{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  background:var(--bg);
+  padding:10px 0;
+   border-radius:16px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.search-box{
+  height:50px;
+  border-radius:14px;
+  font-size:16px;
+}
+
+/* MEDICINE CARD */
+
+.medicine-card{
+  border:none;
+  border-radius:16px;
+  background:#fff;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+  margin-bottom:12px;
+  overflow:hidden;
+}
+
+.medicine-card .card-body{
+  padding:14px;
+}
+
+.medicine-card h5{
+  font-size:17px;
+  margin-bottom:4px;
+}
+
+.medicine-card .text-muted{
+  font-size:14px;
+}
+
+/* DISTRIBUTOR TAGS */
+
+.distributor-item{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  margin:4px 4px 0 0;
+  padding:7px 12px;
+  border-radius:999px;
+  background:#eaf2ff;
+  color:#0d6efd;
+  font-size:12px;
+  font-weight:500;
+}
+
+/* BUTTONS */
+
+.btn{
+  border-radius:12px;
+}
+
+.btn-sm{
+  padding:8px 12px;
+}
+
+/* FLOATING BUTTON */
+
+.fab{
+  position:fixed;
+  right:16px;
+  bottom:16px;
+  width:58px;
+  height:58px;
+  border:none;
+  border-radius:50%;
+  background:#0d6efd;
+  color:#fff;
+  font-size:24px;
+  box-shadow:0 8px 20px rgba(13,110,253,.30);
+  z-index:9999;
+}
+
+/* MODAL */
+
+.modal-content{
+  border:none;
+  border-radius:20px;
+}
+
+.form-control{
+  border-radius:12px;
+  min-height:48px;
+}
+
+/* COUNTER */
+
+.counter-badge{
+  background:rgba(255,255,255,.2);
+  padding:8px 12px;
+  border-radius:12px;
+  display:inline-block;
+}
+
+/* TOAST */
+
+.toast-container{
+  position:fixed;
+  top:10px;
+  right:10px;
+  z-index:9999;
+}
+
+/* MOBILE */
+
+@media (max-width:768px){
+
+  .container-fluid{
+    padding-left:10px !important;
+    padding-right:10px !important;
+  }
+
+  .header-card{
+    padding:16px;
+  }
+
+  .medicine-card{
+    border-radius:14px;
+  }
+
+  .d-flex.gap-2{
+    flex-direction:column;
+  }
+
+  .d-flex.gap-2 .btn{
+    width:100%;
+  }
+
+  .modal-dialog{
+    position:fixed;
+    bottom:0;
+    margin:0;
+    width:100%;
+    max-width:100%;
+  }
+
+  .modal-content{
+    border-radius:20px 20px 0 0;
+  }
+
+
+.search-box{
+  height:50px;
+  font-size:16px;
+  border-radius:14px;
+}
+
+.input-group-text{
+  border-radius:14px 0 0 14px;
+}
+
+.search-box{
+  border-radius:0 14px 14px 0 !important;
+}
+
+.action-icons{
+  display:flex;
+  justify-content:flex-end;
+  gap:18px;
+  margin-top:12px;
+}
+
+.edit-icon{
+  color:#0d6efd;
+  font-size:22px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.delete-icon{
+  color:#dc3545;
+  font-size:22px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.edit-icon:hover,
+.delete-icon:hover{
+  transform:scale(1.15);
+}
+
+.edit-icon:active,
+.delete-icon:active{
+  transform:scale(.95);
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container-fluid px-3 pb-5">
+
+  <!-- HEADER -->
+
+  <div class="header-card">
+
+    <h3 class="mb-2">
+      <i class="bi bi-capsule-pill"></i>
+      STOCKIST
+    </h3>
+
+    <div>
+      Track Medicines & Distributors
+    </div>
+
+    <div class="mt-3">
+
+      <span class="counter-badge">
+
+        <i class="bi bi-clipboard2-pulse"></i>
+
+        Total Medicines :
+        <span id="medicineCount">0</span>
+
+      </span>
+
+    </div>
+
+  </div>
+
+  <!-- SEARCH -->
+
+ <div class="search-sticky">
+
+  <div class="card border-0 shadow-sm mt-2">
+
+    <div class="card-body p-2">
+
+      <div class="input-group">
+
+        <span class="input-group-text bg-white border-end-0">
+          <i class="bi bi-search"></i>
+        </span>
+
+        <input
+          type="text"
+          id="searchInput"
+          class="form-control search-box border-start-0"
+          placeholder="Search medicine, brand or distributor">
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+  <!-- RESULTS -->
+
+  <div id="results"></div>
+
+</div>
+
+<!-- FLOATING BUTTON -->
+
+<button
+  class="fab"
+  onclick="openAddModal()">
+
+  <i class="bi bi-plus-lg"></i>
+
+</button>
+
+<!-- ADD / EDIT MODAL -->
+
+<div
+class="modal fade"
+id="medicineModal"
+tabindex="-1">
+
+<div class="modal-dialog modal-dialog-scrollable">
+
+<div class="modal-content">
+
+<div class="modal-header">
+
+<h5 class="modal-title">
+
+<i class="bi bi-capsule-pill"></i>
+
+<span id="modalTitle">
+Add Medicine
+</span>
+
+</h5>
+
+<button
+type="button"
+class="btn-close"
+data-bs-dismiss="modal">
+</button>
+
+</div>
+
+<div class="modal-body">
+
+<input
+type="hidden"
+id="medicineId">
+
+<div class="mb-3">
+
+<label class="form-label">
+
+Medicine Name
+
+</label>
+
+<input
+type="text"
+id="medicineName"
+class="form-control">
+
+</div>
+
+<div class="mb-3">
+
+<label class="form-label">
+
+Brand Name
+
+</label>
+
+<input
+  type="text"
+  id="brandName"
+  class="form-control"
+  list="brandList">
+
+<datalist id="brandList"></datalist>
+
+</div>
+
+<div class="mb-2">
+
+<label class="form-label">
+
+Distributors
+
+</label>
+
+</div>
+
+<div id="distributorContainer">
+
+<div class="input-group mb-2 distributor-row">
+
+<input
+type="text"
+class="form-control distributor-input"
+placeholder="Distributor Name">
+
+<button
+class="btn btn-outline-danger"
+type="button"
+onclick="removeDistributor(this)">
+
+<i class="bi bi-trash"></i>
+
+</button>
+
+</div>
+
+</div>
+
+<button
+class="btn btn-outline-primary btn-sm"
+type="button"
+onclick="addDistributorField()">
+
+<i class="bi bi-plus-circle"></i>
+
+Add Distributor
+
+</button>
+
+</div>
+
+<div class="modal-footer">
+
+<button
+class="btn btn-secondary"
+data-bs-dismiss="modal">
+
+Close
+
+</button>
+
+<button
+class="btn btn-primary"
+onclick="saveMedicine()">
+
+<i class="bi bi-check-circle"></i>
+
+Save
+
+</button>
+
+</div>
+
+</div>
+</div>
+</div>
+
+<!-- TOAST -->
+
+<div class="toast-container">
+
+<div
+id="appToast"
+class="toast align-items-center border-0"
+role="alert">
+
+<div class="d-flex">
+
+<div
+id="toastMessage"
+class="toast-body">
+
+Done
+
+</div>
+
+<button
+type="button"
+class="btn-close me-2 m-auto"
+data-bs-dismiss="toast">
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+
+let modal;
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  modal = new bootstrap.Modal(
+    document.getElementById("medicineModal")
+  );
+
+  loadMedicines();
+
+  document
+    .getElementById("searchInput")
+    .addEventListener("input", function () {
+
+      searchMedicines(this.value);
+
+    });
+
+});
+
+/* ---------- TOAST ---------- */
+
+function showToast(message) {
+
+  document.getElementById("toastMessage").innerHTML =
+    message;
+
+  const toast = new bootstrap.Toast(
+    document.getElementById("appToast")
+  );
+
+  toast.show();
+
+}
+
+/* ---------- MODAL ---------- */
+
+function openAddModal() {
+
+  document.getElementById("modalTitle").innerText =
+    "Add Medicine";
+
+  document.getElementById("medicineId").value = "";
+
+  document.getElementById("medicineName").value = "";
+
+  document.getElementById("brandName").value = "";
+
+  document.getElementById("distributorContainer").innerHTML = `
+    <div class="input-group mb-2 distributor-row">
+
+     <input
+  type="text"
+  class="form-control distributor-input"
+  list="distributorList"
+  placeholder="Distributor Name">
+
+<datalist id="distributorList"></datalist>
+      <button
+        class="btn btn-outline-danger"
+        type="button"
+        onclick="removeDistributor(this)">
+
+        <i class="bi bi-trash"></i>
+
+      </button>
+
+    </div>
+  `;
+
+loadDistributorSuggestions();
+loadBrandSuggestions();
+modal.show();
+
+}
+
+
+/* ---------- DISTRIBUTORS ---------- */
+
+function addDistributorField(value = "") {
+
+  const div = document.createElement("div");
+
+  div.className =
+    "input-group mb-2 distributor-row";
+
+  div.innerHTML = `
+    <input
+      type="text"
+      class="form-control distributor-input"
+      value="${value}"
+      placeholder="Distributor Name">
+
+    <button
+      class="btn btn-outline-danger"
+      type="button"
+      onclick="removeDistributor(this)">
+
+      <i class="bi bi-trash"></i>
+
+    </button>
+  `;
+
+  document
+    .getElementById("distributorContainer")
+    .appendChild(div);
+
+}
+
+function removeDistributor(btn) {
+
+  const rows =
+    document.querySelectorAll(".distributor-row");
+
+  if (rows.length === 1) {
+
+    showToast("At least one distributor required");
+
+    return;
+  }
+
+  btn.closest(".distributor-row").remove();
+
+}
+
+/* ---------- SAVE ---------- */
+
+function saveMedicine() {
+
+  const id =
+    document.getElementById("medicineId").value;
+
+  const medicine =
+    document.getElementById("medicineName").value.trim();
+
+  const brand =
+    document.getElementById("brandName").value.trim();
+
+  if (!medicine || !brand) {
+
+    showToast("Medicine & Brand required");
+
+    return;
+  }
+
+  const distributors = [];
+
+  document
+    .querySelectorAll(".distributor-input")
+    .forEach(input => {
+
+      if (input.value.trim()) {
+
+        distributors.push(
+          input.value.trim()
+        );
+
+      }
+
+    });
+
+  if (distributors.length === 0) {
+
+    showToast("Add distributor");
+
+    return;
+  }
+
+  const payload = {
+    id: id,
+    medicine: medicine,
+    brand: brand,
+    distributors: distributors
+  };
+
+  if (id) {
+
+    google.script.run
+      .withSuccessHandler(function () {
+
+        modal.hide();
+
+        showToast(
+          "Medicine Updated"
+        );
+
+        loadMedicines();
+
+      })
+      .withFailureHandler(function (err) {
+
+        showToast(err.message);
+
+      })
+      .updateMedicine(payload);
+
+  } else {
+
+    google.script.run
+      .withSuccessHandler(function () {
+
+        modal.hide();
+
+        showToast(
+          "Medicine Saved"
+        );
+
+        loadMedicines();
+
+      })
+      .withFailureHandler(function (err) {
+
+        showToast(err.message);
+
+      })
+      .saveMedicine(payload);
+
+  }
+
+}
+
+/* ---------- LOAD ---------- */
+
+function loadMedicines() {
+
+  google.script.run
+    .withSuccessHandler(function (data) {
+
+      renderMedicines(data);
+
+    })
+    .getAllMedicines();
+
+  google.script.run
+    .withSuccessHandler(function (count) {
+
+      document.getElementById(
+        "medicineCount"
+      ).innerText = count;
+
+    })
+    .getMedicineCount();
+
+}
+
+/* ---------- SEARCH ---------- */
+
+function searchMedicines(keyword) {
+
+  google.script.run
+    .withSuccessHandler(function (data) {
+
+      renderMedicines(data);
+
+    })
+    .searchMedicines(keyword);
+
+}
+
+/* ---------- RENDER ---------- */
+
+function renderMedicines(data) {
+
+  let html = "";
+
+  if (data.length === 0) {
+
+    html = `
+      <div class="alert alert-warning mt-3">
+
+        No medicines found
+
+      </div>
+    `;
+
+    document.getElementById(
+      "results"
+    ).innerHTML = html;
+
+    return;
+  }
+
+  data.forEach(item => {
+
+    let distributors = "";
+
+    item.distributors.forEach(d => {
+
+      distributors += `
+        <div class="distributor-item">
+
+          <i class="bi bi-truck"></i>
+
+          ${d}
+
+        </div>
+      `;
+
+    });
+
+    html += `
+      <div class="card medicine-card">
+
+        <div class="card-body">
+
+          <h5>
+
+            <i class="bi bi-capsule-pill"></i>
+
+            ${item.medicine}
+
+          </h5>
+
+          <div class="mb-3 text-muted">
+
+            <i class="bi bi-bookmark-star"></i>
+
+            ${item.brand}
+
+          </div>
+
+          ${distributors}
+
+          <div class="action-icons">
+
+  <i
+    class="bi bi-pencil-square edit-icon"
+    onclick="editMedicine('${item.id}')">
+  </i>
+
+  <i
+    class="bi bi-trash3-fill delete-icon"
+    onclick="deleteMedicine('${item.id}')">
+  </i>
+
+</div>
+
+        </div>
+
+      </div>
+    `;
+
+  });
+
+  document.getElementById(
+    "results"
+  ).innerHTML = html;
+
+}
+
+/* ---------- EDIT ---------- */
+
+function editMedicine(id) {
+
+  google.script.run
+    .withSuccessHandler(function (data) {
+
+      document.getElementById(
+        "modalTitle"
+      ).innerText = "Edit Medicine";
+
+      document.getElementById(
+        "medicineId"
+      ).value = data.id;
+
+      document.getElementById(
+        "medicineName"
+      ).value = data.medicine;
+
+      document.getElementById(
+        "brandName"
+      ).value = data.brand;
+
+      document.getElementById(
+        "distributorContainer"
+      ).innerHTML = "";
+
+      data.distributors.forEach(d => {
+
+        addDistributorField(d);
+
+      });
+
+      modal.show();
+
+    })
+    .getMedicineById(id);
+
+}
+
+function loadDistributorSuggestions() {
+
+  google.script.run
+    .withSuccessHandler(function(distributors) {
+
+      const list =
+        document.getElementById("distributorList");
+
+      if (!list) return;
+
+      list.innerHTML = "";
+
+      distributors.forEach(function(d) {
+
+        const option =
+          document.createElement("option");
+
+        option.value = d;
+
+        list.appendChild(option);
+
+      });
+
+    })
+    .getAllDistributors();
+
+}
+
+/* ---------- DELETE ---------- */
+
+function deleteMedicine(id) {
+
+  if (
+    !confirm(
+      "Delete this medicine?"
+    )
+  ) {
+    return;
+  }
+
+  google.script.run
+    .withSuccessHandler(function () {
+
+      showToast(
+        "Medicine Deleted"
+      );
+
+      loadMedicines();
+
+    })
+    .deleteMedicine(id);
+
+}
+
+function loadDistributorSuggestions() {
+
+  google.script.run
+    .withSuccessHandler(function(distributors){
+
+      const list =
+        document.getElementById("distributorList");
+
+      list.innerHTML = "";
+
+      distributors.forEach(d => {
+
+        const option =
+          document.createElement("option");
+
+        option.value = d;
+
+        list.appendChild(option);
+
+      });
+
+    })
+    .getAllDistributors();
+
+}
+
+function loadBrandSuggestions() {
+
+  google.script.run
+    .withSuccessHandler(function(brands){
+
+      const list =
+        document.getElementById("brandList");
+
+      if (!list) return;
+
+      list.innerHTML = "";
+
+      brands.forEach(function(brand){
+
+        const option =
+          document.createElement("option");
+
+        option.value = brand;
+
+        list.appendChild(option);
+
+      });
+
+    })
+    .getAllBrands();
+
+}
+
+</script>
+
+</body>
+</html>
